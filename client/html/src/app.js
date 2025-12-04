@@ -1,9 +1,9 @@
 window.paypal
   .Buttons({
     style: {
-      shape: "rect",
+      shape: "pill",
       layout: "vertical",
-      color: "gold",
+      color: "black",
       label: "paypal",
     },
     message: {
