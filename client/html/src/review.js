@@ -70,7 +70,16 @@ document.getElementById("confirm-btn").onclick = async function () {
     console.log("Capture result:", result);
 
     if (result.status === "COMPLETED") {
-      alert("Payment successful!");
+      console.log("Payment successful!");
+
+      document.body.innerHTML = `
+          <div style="text-align:center; padding:50px;">
+            <h1 style="color:green;">Payment Successful!</h1>
+            <p>Order ID: ${orderID}</p>
+            <p>Total: $${(100 + shippingCost).toFixed(2)}</p>
+            <p>Thank you for your purchase!</p>
+          </div>
+        `;
     }
   } catch (error) {
     console.error("Error:", error);
