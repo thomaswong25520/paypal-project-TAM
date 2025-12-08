@@ -124,6 +124,21 @@ app.post("/api/orders/:orderID/capture", async (req, res) => {
   }
 });
 
+// Get order details
+app.get("/api/orders/:orderID", async (req, res) => {
+  console.log("GET order:", req.params.orderID);
+
+  try {
+    const { body } = await ordersController.getOrder({
+      id: req.params.orderID,
+    });
+    res.json(JSON.parse(body));
+  } catch (error) {
+    console.error("Error getting order:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Node server listening at http://localhost:${PORT}/`);
 });
