@@ -44,4 +44,38 @@ async function loadOrder() {
   `;
 }
 
+// Confirm button
+document.getElementById("confirm-btn").onclick = async function () {
+  console.log("Confirming order...");
+
+  try {
+    // Update shipping
+    console.log("Updating shipping...");
+    await fetch(`/api/orders/${orderID}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ shippingAmount: shippingCost }),
+    });
+
+    console.log("Shipping updated");
+
+    // Capture payment
+    console.log("Capturing payment...");
+    const captureResponse = await fetch(`/api/orders/${orderID}/capture`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const result = await captureResponse.json();
+    console.log("Capture result:", result);
+
+    if (result.status === "COMPLETED") {
+      alert("Payment successful!");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Payment failed: " + error.message);
+  }
+};
+
 loadOrder();
