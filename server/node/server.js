@@ -139,6 +139,46 @@ app.get("/api/orders/:orderID", async (req, res) => {
   }
 });
 
+// Update order shipping
+app.patch("/api/orders/:orderID", async (req, res) => {
+  console.log("PATCH order:", req.params.orderID);
+  console.log("Body:", req.body);
+
+  const { shippingAmount } = req.body;
+
+  try {
+    const collect = {
+      id: req.params.orderID,
+      body: [
+        {
+          op: "replace",
+          path: "/purchase_units/@reference_id=='default'/amount",
+          value: {
+            currency_code: "USD",
+            value: (100 + shippingAmount).toFixed(2),
+            breakdown: {
+              item_total: {
+                currency_code: "USD",
+                value: "100.00",
+              },
+              shipping: {
+                currency_code: "USD",
+                value: shippingAmount.toFixed(2),
+              },
+            },
+          },
+        },
+      ],
+    };
+
+    await ordersController.patchOrder(collect);
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Error patching order:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Node server listening at http://localhost:${PORT}/`);
 });
