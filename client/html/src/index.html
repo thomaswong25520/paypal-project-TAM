@@ -8,87 +8,77 @@
       type="text/css"
       href="https://www.paypalobjects.com/webstatic/en_US/developer/docs/css/cardfields.css"
     />
-    <title>PayPal JS SDK Advanced Integration - Checkout Flow</title>
+    <title>Checkout</title>
   </head>
   <body>
-    <div id="paypal-button-container" class="paypal-button-container"></div>
-    <!-- Containers for Card Fields hosted by PayPal -->
     <form id="checkout-form">
-        <h2>Customer information</h2>
-        <div>
-          <input
-            type="text"
-            id="customer-first-name"
-            name="customer-first-name"
-            autocomplete="off"
-            placeholder="First name"
-          />
-        </div>
-        <div>
-          <input
-            type="text"
-            id="customer-last-name"
-            name="customer-last-name"
-            autocomplete="off"
-            placeholder="Last name"
-          />
-        </div>
+      <h2>Customer Information</h2>
+      <div>
         <input
           type="text"
-          id="card-billing-address-line-1"
-          name="card-billing-address-line-1"
-          autocomplete="off"
-          placeholder="Address line 1"
+          id="customer-first-name"
+          placeholder="First name"
+          required
         />
       </div>
       <div>
         <input
           type="text"
-          id="card-billing-address-country"
-          name="card-billing-address-country"
-          autocomplete="off"
-          placeholder="Country"
+          id="customer-last-name"
+          placeholder="Last name"
+          required
+        />
+      </div>
+      <div>
+        <input type="text" id="address-line-1" placeholder="Address" required />
+      </div>
+      <div>
+        <input type="text" id="city" placeholder="City" required />
+      </div>
+      <div>
+        <input type="text" id="state" placeholder="State" required />
+      </div>
+      <div>
+        <input
+          type="text"
+          id="postal-code"
+          placeholder="Postal code"
+          required
         />
       </div>
       <div>
         <input
           type="text"
-          id="card-billing-address-city"
-          name="card-billing-address-city"
-          autocomplete="off"
-          placeholder="City"
+          id="country-code"
+          placeholder="Country code (US, FR)"
+          required
         />
       </div>
-      <div>
-        <input
-          type="text"
-          id="card-billing-address-postal-code"
-          name="card-billing-address-postal-code"
-          autocomplete="off"
-          placeholder="Postal/zip code"
-        />
-      </div>
+      <br />
+      <button type="submit">Continue to Payment</button>
     </form>
-      <br /><br />
-      <button id="card-field-submit-button" type="submit">Continue to Payment</button>
-    </div>
+
     <p id="result-message"></p>
-    <script src="https://www.paypal.com/sdk/js?components=buttons,card-fields&client-id=%PAYPAL_CLIENT_ID%"></script>
-    <script>document
-      .getElementById("checkout-form")
-      .addEventListener("submit", function (e) {
-        e.preventDefault();
-        const customerData = {
-          firstName: document.getElementById("customer-first-name").value,
-          lastName: document.getElementById("customer-last-name").value,
-          address: document.getElementById("card-billing-address-line-1").value,
-          address2: document.getElementById("card-billing-address-country").value,
-          city: document.getElementById("card-billing-address-city").value,
-          state: document.getElementById("card-billing-address-postal-code").value,
-        };
-        sessionStorage.setItem("customerData", JSON.stringify(customerData));
-        window.location.href = "payment.html";
-      });
+
+    <script>
+      document
+        .getElementById("checkout-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const customerData = {
+            firstName: document.getElementById("customer-first-name").value,
+            lastName: document.getElementById("customer-last-name").value,
+            addressLine1: document.getElementById("address-line-1").value,
+            city: document.getElementById("city").value,
+            state: document.getElementById("state").value,
+            postalCode: document.getElementById("postal-code").value,
+            countryCode: document.getElementById("country-code").value,
+          };
+
+          sessionStorage.setItem("customerData", JSON.stringify(customerData));
+          window.location.href = "payment.html";
+        });
     </script>
   </body>
 </html>
