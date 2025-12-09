@@ -1,20 +1,94 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PayPal JS SDK Standard Integration</title>
     <link
       rel="stylesheet"
       type="text/css"
       href="https://www.paypalobjects.com/webstatic/en_US/developer/docs/css/cardfields.css"
     />
+    <title>PayPal JS SDK Advanced Integration - Checkout Flow</title>
   </head>
   <body>
     <div id="paypal-button-container" class="paypal-button-container"></div>
+    <!-- Containers for Card Fields hosted by PayPal -->
+    <form id="checkout-form">
+        <h2>Customer information</h2>
+        <div>
+          <input
+            type="text"
+            id="customer-first-name"
+            name="customer-first-name"
+            autocomplete="off"
+            placeholder="First name"
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            id="customer-last-name"
+            name="customer-last-name"
+            autocomplete="off"
+            placeholder="Last name"
+          />
+        </div>
+        <input
+          type="text"
+          id="card-billing-address-line-1"
+          name="card-billing-address-line-1"
+          autocomplete="off"
+          placeholder="Address line 1"
+        />
+      </div>
+      <div>
+        <input
+          type="text"
+          id="card-billing-address-country"
+          name="card-billing-address-country"
+          autocomplete="off"
+          placeholder="Country"
+        />
+      </div>
+      <div>
+        <input
+          type="text"
+          id="card-billing-address-city"
+          name="card-billing-address-city"
+          autocomplete="off"
+          placeholder="City"
+        />
+      </div>
+      <div>
+        <input
+          type="text"
+          id="card-billing-address-postal-code"
+          name="card-billing-address-postal-code"
+          autocomplete="off"
+          placeholder="Postal/zip code"
+        />
+      </div>
+    </form>
+      <br /><br />
+      <button id="card-field-submit-button" type="submit">Continue to Payment</button>
+    </div>
     <p id="result-message"></p>
-
-    <script src="https://www.paypal.com/sdk/js?client-id=%PAYPAL_CLIENT_ID%&buyer-country=US&currency=USD&components=buttons&enable-funding=venmo"></script>
-    <script src="app.js"></script>
+    <script src="https://www.paypal.com/sdk/js?components=buttons,card-fields&client-id=%PAYPAL_CLIENT_ID%"></script>
+    <script>document
+      .getElementById("checkout-form")
+      .addEventListener("submit", function (e) {
+        e.preventDefault();
+        const customerData = {
+          firstName: document.getElementById("customer-first-name").value,
+          lastName: document.getElementById("customer-last-name").value,
+          address: document.getElementById("card-billing-address-line-1").value,
+          address2: document.getElementById("card-billing-address-country").value,
+          city: document.getElementById("card-billing-address-city").value,
+          state: document.getElementById("card-billing-address-postal-code").value,
+        };
+        sessionStorage.setItem("customerData", JSON.stringify(customerData));
+        window.location.href = "payment.html";
+      });
+    </script>
   </body>
 </html>
