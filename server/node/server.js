@@ -212,6 +212,28 @@ const refundCapture = async (captureId, amount = null) => {
   }
 };
 
+// Refund a captured payment
+app.post("/api/orders/:captureID/refund", async (req, res) => {
+  try {
+    const { captureID } = req.params;
+    const { amount } = req.body;
+
+    console.log("Refund request - Capture ID:", captureID);
+    console.log("Refund amount:", amount || "Full refund");
+
+    const { jsonResponse, httpStatusCode } = await refundCapture(
+      captureID,
+      amount
+    );
+
+    console.log("Refund response:", jsonResponse);
+    res.status(httpStatusCode).json(jsonResponse);
+  } catch (error) {
+    console.error("Failed to refund:", error);
+    res.status(500).json({ error: "Failed to process refund." });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Node server listening at http://localhost:${PORT}/`);
 });
