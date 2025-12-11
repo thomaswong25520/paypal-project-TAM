@@ -24,14 +24,14 @@ document.getElementById("shipping-address").innerHTML =
   "<br>" +
   customerData.countryCode;
 
-function resultMessage(message) {
+const resultMessage = (message) => {
   document.getElementById("result-message").innerHTML = message;
-}
+};
 
 // PayPal Buttons
 paypal
   .Buttons({
-    createOrder: function () {
+    createOrder: () => {
       return fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -43,7 +43,7 @@ paypal
         .then((order) => order.id);
     },
 
-    onApprove: function (data) {
+    onApprove: (data) => {
       return fetch(`/api/orders/${data.orderID}/capture`, {
         method: "POST",
       })
@@ -57,7 +57,7 @@ paypal
         });
     },
 
-    onError: function (error) {
+    onError: (error) => {
       console.error(error);
       resultMessage("PayPal error");
     },
@@ -66,7 +66,7 @@ paypal
 
 // Card Fields
 const cardField = paypal.CardFields({
-  createOrder: function () {
+  createOrder: () => {
     return fetch("/api/orders", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -78,7 +78,7 @@ const cardField = paypal.CardFields({
       .then((orderData) => orderData.id);
   },
 
-  onApprove: function (data) {
+  onApprove: (data) => {
     return fetch(`/api/orders/${data.orderID}/capture`, {
       method: "POST",
     })
@@ -92,7 +92,7 @@ const cardField = paypal.CardFields({
       });
   },
 
-  onError: function (error) {
+  onError: (error) => {
     console.error("Card error:", error);
     resultMessage("Card payment failed");
   },
