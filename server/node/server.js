@@ -181,6 +181,37 @@ app.patch("/api/orders/:orderID", async (req, res) => {
   }
 });
 
+const refundCapture = async (captureId, amount = null) => {
+  const refundRequest = {
+    captureId: captureId,
+    prefer: "return=representation",
+  };
+
+  // If amount provided = partial refund, otherwise full refund
+  if (amount) {
+    refundRequest.body = {
+      amount: {
+        currencyCode: "USD",
+        value: amount,
+      },
+    };
+  }
+
+  try {
+    const { body, ...httpResponse } =
+      await paymentsController.refundCapturedPayment(refundRequest);
+    return {
+      jsonResponse: JSON.parse(body),
+      httpStatusCode: httpResponse.statusCode,
+    };
+  } catch (error) {
+    if (error instanceof ApiError) {
+      throw new Error(error.message);
+    }
+    throw error;
+  }
+};
+
 app.listen(PORT, () => {
   console.log(`Node server listening at http://localhost:${PORT}/`);
 });
