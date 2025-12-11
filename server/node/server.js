@@ -7,6 +7,7 @@ import {
   Environment,
   LogLevel,
   OrdersController,
+  PaymentsController,
 } from "@paypal/paypal-server-sdk";
 import bodyParser from "body-parser";
 
@@ -34,6 +35,7 @@ const client = new Client({
 });
 
 const ordersController = new OrdersController(client);
+const paymentsController = new PaymentsController(client);
 
 /**
  * Create an order to start the transaction.
