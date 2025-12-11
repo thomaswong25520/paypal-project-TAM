@@ -14,6 +14,9 @@ import bodyParser from "body-parser";
 const app = express();
 app.use(bodyParser.json());
 
+// Serve static files from client folder
+app.use("/client", express.static("../../client"));
+
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, PORT = 8080 } = process.env;
 
 const client = new Client({
