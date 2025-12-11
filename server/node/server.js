@@ -1,4 +1,6 @@
 import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 import "dotenv/config";
 import {
   ApiError,
@@ -11,8 +13,14 @@ import {
 } from "@paypal/paypal-server-sdk";
 import bodyParser from "body-parser";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
 app.use(bodyParser.json());
+
+// Serve static files
+app.use("/client", express.static(path.join(__dirname, "../../client")));
 
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, PORT = 8080 } = process.env;
 
