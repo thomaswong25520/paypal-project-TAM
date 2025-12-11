@@ -59,15 +59,20 @@ const createOrder = async (cart) => {
     const { body, ...httpResponse } = await ordersController.createOrder(
       collect
     );
-    // Get more response info...
-    // const { statusCode, headers } = httpResponse;
+    console.log(
+      "PayPal-Debug-Id (createOrder):",
+      httpResponse.headers["paypal-debug-id"]
+    );
     return {
       jsonResponse: JSON.parse(body),
       httpStatusCode: httpResponse.statusCode,
     };
   } catch (error) {
     if (error instanceof ApiError) {
-      // const { statusCode, headers } = error;
+      console.log(
+        "PayPal-Debug-Id (createOrder error):",
+        error.headers?.["paypal-debug-id"]
+      );
       throw new Error(error.message);
     }
   }
@@ -87,15 +92,20 @@ const captureOrder = async (orderID) => {
     const { body, ...httpResponse } = await ordersController.captureOrder(
       collect
     );
-    // Get more response info...
-    // const { statusCode, headers } = httpResponse;
+    console.log(
+      "PayPal-Debug-Id (captureOrder):",
+      httpResponse.headers["paypal-debug-id"]
+    );
     return {
       jsonResponse: JSON.parse(body),
       httpStatusCode: httpResponse.statusCode,
     };
   } catch (error) {
     if (error instanceof ApiError) {
-      // const { statusCode, headers } = error;
+      console.log(
+        "PayPal-Debug-Id (captureOrder error):",
+        error.headers?.["paypal-debug-id"]
+      );
       throw new Error(error.message);
     }
   }
@@ -103,7 +113,6 @@ const captureOrder = async (orderID) => {
 
 app.post("/api/orders", async (req, res) => {
   try {
-    // use the cart information passed from the front-end to calculate the order amount detals
     const { cart } = req.body;
     const { jsonResponse, httpStatusCode } = await createOrder(cart);
     res.status(httpStatusCode).json(jsonResponse);
@@ -119,7 +128,7 @@ app.post("/api/orders/:orderID/capture", async (req, res) => {
     const { jsonResponse, httpStatusCode } = await captureOrder(orderID);
     res.status(httpStatusCode).json(jsonResponse);
   } catch (error) {
-    console.error("Failed to create order:", error);
+    console.error("Failed to capture order:", error);
     res.status(500).json({ error: "Failed to capture order." });
   }
 });
@@ -129,12 +138,20 @@ app.get("/api/orders/:orderID", async (req, res) => {
   console.log("GET order:", req.params.orderID);
 
   try {
-    const { body } = await ordersController.getOrder({
+    const { body, ...httpResponse } = await ordersController.getOrder({
       id: req.params.orderID,
     });
+    console.log(
+      "PayPal-Debug-Id (getOrder):",
+      httpResponse.headers["paypal-debug-id"]
+    );
     res.json(JSON.parse(body));
   } catch (error) {
     console.error("Error getting order:", error);
+    console.log(
+      "PayPal-Debug-Id (getOrder error):",
+      error.headers?.["paypal-debug-id"]
+    );
     res.status(500).json({ error: error.message });
   }
 });
@@ -171,10 +188,18 @@ app.patch("/api/orders/:orderID", async (req, res) => {
       ],
     };
 
-    await ordersController.patchOrder(collect);
+    const { ...httpResponse } = await ordersController.patchOrder(collect);
+    console.log(
+      "PayPal-Debug-Id (patchOrder):",
+      httpResponse.headers["paypal-debug-id"]
+    );
     res.json({ success: true });
   } catch (error) {
     console.error("Error patching order:", error);
+    console.log(
+      "PayPal-Debug-Id (patchOrder error):",
+      error.headers?.["paypal-debug-id"]
+    );
     res.status(500).json({ error: error.message });
   }
 });
