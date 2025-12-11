@@ -14,9 +14,6 @@ import bodyParser from "body-parser";
 const app = express();
 app.use(bodyParser.json());
 
-// Serve static files from client folder
-app.use("/client", express.static("../../client"));
-
 const { PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET, PORT = 8080 } = process.env;
 
 const client = new Client({
@@ -64,15 +61,20 @@ const createOrder = async (cart) => {
     const { body, ...httpResponse } = await ordersController.createOrder(
       collect
     );
-    // Get more response info...
-    // const { statusCode, headers } = httpResponse;
+    console.log(
+      "PayPal-Debug-Id (createOrder):",
+      httpResponse.headers["paypal-debug-id"]
+    );
     return {
       jsonResponse: JSON.parse(body),
       httpStatusCode: httpResponse.statusCode,
     };
   } catch (error) {
     if (error instanceof ApiError) {
-      // const { statusCode, headers } = error;
+      console.log(
+        "PayPal-Debug-Id (createOrder error):",
+        error.headers?.["paypal-debug-id"]
+      );
       throw new Error(error.message);
     }
   }
@@ -92,23 +94,70 @@ const captureOrder = async (orderID) => {
     const { body, ...httpResponse } = await ordersController.captureOrder(
       collect
     );
-    // Get more response info...
-    // const { statusCode, headers } = httpResponse;
+    console.log(
+      "PayPal-Debug-Id (captureOrder):",
+      httpResponse.headers["paypal-debug-id"]
+    );
     return {
       jsonResponse: JSON.parse(body),
       httpStatusCode: httpResponse.statusCode,
     };
   } catch (error) {
     if (error instanceof ApiError) {
-      // const { statusCode, headers } = error;
+      console.log(
+        "PayPal-Debug-Id (captureOrder error):",
+        error.headers?.["paypal-debug-id"]
+      );
       throw new Error(error.message);
     }
   }
 };
 
+/**
+ * Refund a captured payment.
+ * @see https://developer.paypal.com/docs/api/payments/v2/#captures_refund
+ */
+const refundCapture = async (captureId, amount = null) => {
+  const refundRequest = {
+    captureId: captureId,
+    prefer: "return=representation",
+  };
+
+  // If amount provided = partial refund, otherwise full refund
+  if (amount) {
+    refundRequest.body = {
+      amount: {
+        currencyCode: "USD",
+        value: amount,
+      },
+    };
+  }
+
+  try {
+    const { body, ...httpResponse } =
+      await paymentsController.refundCapturedPayment(refundRequest);
+    console.log(
+      "PayPal-Debug-Id (refundCapture):",
+      httpResponse.headers["paypal-debug-id"]
+    );
+    return {
+      jsonResponse: JSON.parse(body),
+      httpStatusCode: httpResponse.statusCode,
+    };
+  } catch (error) {
+    if (error instanceof ApiError) {
+      console.log(
+        "PayPal-Debug-Id (refundCapture error):",
+        error.headers?.["paypal-debug-id"]
+      );
+      throw new Error(error.message);
+    }
+    throw error;
+  }
+};
+
 app.post("/api/orders", async (req, res) => {
   try {
-    // use the cart information passed from the front-end to calculate the order amount detals
     const { cart } = req.body;
     const { jsonResponse, httpStatusCode } = await createOrder(cart);
     res.status(httpStatusCode).json(jsonResponse);
@@ -124,7 +173,7 @@ app.post("/api/orders/:orderID/capture", async (req, res) => {
     const { jsonResponse, httpStatusCode } = await captureOrder(orderID);
     res.status(httpStatusCode).json(jsonResponse);
   } catch (error) {
-    console.error("Failed to create order:", error);
+    console.error("Failed to capture order:", error);
     res.status(500).json({ error: "Failed to capture order." });
   }
 });
@@ -134,12 +183,20 @@ app.get("/api/orders/:orderID", async (req, res) => {
   console.log("GET order:", req.params.orderID);
 
   try {
-    const { body } = await ordersController.getOrder({
+    const { body, ...httpResponse } = await ordersController.getOrder({
       id: req.params.orderID,
     });
+    console.log(
+      "PayPal-Debug-Id (getOrder):",
+      httpResponse.headers["paypal-debug-id"]
+    );
     res.json(JSON.parse(body));
   } catch (error) {
     console.error("Error getting order:", error);
+    console.log(
+      "PayPal-Debug-Id (getOrder error):",
+      error.headers?.["paypal-debug-id"]
+    );
     res.status(500).json({ error: error.message });
   }
 });
@@ -176,44 +233,21 @@ app.patch("/api/orders/:orderID", async (req, res) => {
       ],
     };
 
-    await ordersController.patchOrder(collect);
+    const { ...httpResponse } = await ordersController.patchOrder(collect);
+    console.log(
+      "PayPal-Debug-Id (patchOrder):",
+      httpResponse.headers["paypal-debug-id"]
+    );
     res.json({ success: true });
   } catch (error) {
     console.error("Error patching order:", error);
+    console.log(
+      "PayPal-Debug-Id (patchOrder error):",
+      error.headers?.["paypal-debug-id"]
+    );
     res.status(500).json({ error: error.message });
   }
 });
-
-const refundCapture = async (captureId, amount = null) => {
-  const refundRequest = {
-    captureId: captureId,
-    prefer: "return=representation",
-  };
-
-  // If amount provided = partial refund, otherwise full refund
-  if (amount) {
-    refundRequest.body = {
-      amount: {
-        currencyCode: "USD",
-        value: amount,
-      },
-    };
-  }
-
-  try {
-    const { body, ...httpResponse } =
-      await paymentsController.refundCapturedPayment(refundRequest);
-    return {
-      jsonResponse: JSON.parse(body),
-      httpStatusCode: httpResponse.statusCode,
-    };
-  } catch (error) {
-    if (error instanceof ApiError) {
-      throw new Error(error.message);
-    }
-    throw error;
-  }
-};
 
 // Refund a captured payment
 app.post("/api/orders/:captureID/refund", async (req, res) => {
