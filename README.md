@@ -36,12 +36,19 @@ npm install
 
 ### 2. Configure environment
 
-Create `.env` file in `server/node/`:
+Add your PayPal credentials to your shell config file (`~/.zshrc` or `~/.bashrc`):
 
+```bash
+export PAYPAL_CLIENT_ID="your_client_id"
+export PAYPAL_CLIENT_SECRET="your_client_secret"
 ```
-PAYPAL_CLIENT_ID=your_client_id
-PAYPAL_CLIENT_SECRET=your_client_secret
-PORT=8080
+
+Then reload the config:
+
+```bash
+source ~/.zshrc
+# or
+source ~/.bashrc
 ```
 
 ### 3. Run server
@@ -50,10 +57,16 @@ PORT=8080
 npm start
 ```
 
-### 4. Open checkout
+### 4. Open frontend
+
+```bash
+npm start
+```
+
+Then click on
 
 ```
-http://localhost:8080/client/html/src/checkout.html
+http://localhost:3000/
 ```
 
 ## API Endpoints
@@ -75,25 +88,62 @@ http://localhost:8080/client/html/src/checkout.html
 
 ![PayPal login popup](phase1-screenshots/phase1_6.png)
 
+### Review Page
+
+#### Marseille
+
+![Review Page](phase1-screenshots/phase1_2.png)
+
+#### Paris
+
+![Review Page](phase1-screenshots/phase1_Paris.png)
+
 ### Payment Success
+
+#### Marseille
 
 ![Payment confirmation](phase1-screenshots/phase1_3.png)
 
+#### Paris
+
+![Payment confirmation](phase1-screenshots/phase1_Paris2.png)
+
 ### Sandbox Dashboard
 
-#### Customer
+#### Customer Marseille
 
 ![Transaction in PayPal Sandbox Buyer](phase1-screenshots/phase1_4.png)
 
-#### Merchant
+#### Merchant Marseille
 
 ![Transaction in PayPal Sandbox Seller](phase1-screenshots/phase1_5.png)
+
+#### Customer Paris
+
+![Transaction in PayPal Sandbox Buyer](phase1-screenshots/phase1_Paris3.png)
+
+#### Merchant Paris
+
+![Transaction in PayPal Sandbox Seller](phase1-screenshots/phase1_Paris4.png)
 
 ## Debugging
 
 The server logs `PayPal-Debug-Id` for each API call. Use this ID when contacting PayPal Support.
 
-```
-PayPal-Debug-Id (createOrder): abc123xyz
-PayPal-Debug-Id (captureOrder): def456uvw
-```
+Example:
+
+### createOrder API Call
+
+![REST Orders API (v2) + PayPal-Debug-Id](phase1-screenshots/phase1_createOrder.png)
+
+### getOrder API Call
+
+![REST Orders API (v2) + PayPal-Debug-Id](phase1-screenshots/phase1_getOrder.png)
+
+### patchOrder API Call
+
+![REST Orders API (v2) + PayPal-Debug-Id](phase1-screenshots/phase1_patchOrder.png)
+
+### captureOrder API Call
+
+![REST Orders API (v2) + PayPal-Debug-Id](phase1-screenshots/phase1_captureOrder.png)
