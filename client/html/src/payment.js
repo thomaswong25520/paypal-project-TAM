@@ -1,5 +1,3 @@
-// payment.js
-
 // Get customer data
 const customerData = JSON.parse(sessionStorage.getItem("customerData") || "{}");
 
