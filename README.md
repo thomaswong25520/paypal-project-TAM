@@ -82,11 +82,11 @@ http://localhost:3000/
 
 ### Checkout Page
 
-![Checkout page with PayPal button](phase1-screenshots/phase1_1.png)
+<img src="phase1-screenshots/phase1_1.png" width="800">
 
 ### PayPal Popup
 
-![PayPal login popup](phase1-screenshots/phase1_6.png)
+<img src="phase1-screenshots/phase1_6.png" width="800">
 
 ### Review Page
 
