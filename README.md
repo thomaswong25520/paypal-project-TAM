@@ -89,29 +89,29 @@ Same as Phase 1 - no backend changes required.
 
 ### Checkout Form
 
-<img src="phase2-screenshots/phase-2_1.png" alt="Customer information form" width="600">
+<img src="phase2-screenshots/phase-2_1.png" width="800">
 
 ### Payment Page
 
-<img src="phase2-screenshots/phase-2_3.png" alt="Customer information form" width="600">
+<img src="phase2-screenshots/phase-2_3.png" width="800">
 
 ### Payment Success
 
-<img src="phase2-screenshots/phase-2_4.png" alt="Customer information form" width="600">
+<img src="phase2-screenshots/phase-2_4.png" width="800">
 
 ### Capture call
 
-<img src="phase2-screenshots/phase-2_8.png" alt="Customer information form" width="600">
+<img src="phase2-screenshots/phase-2_8.png" width="800">
 
 ### Sandbox Dashboard
 
-<img src="phase2-screenshots/phase-2_5.png" alt="Customer information form" width="600">
+<img src="phase2-screenshots/phase-2_5.png" width="800">
 
-<img src="phase2-screenshots/phase-2_6.png" alt="Customer information form" width="600">
+<img src="phase2-screenshots/phase-2_6.png" width="800">
 
 ### PayPal fees Merchant side
 
-<img src="phase2-screenshots/phase-2_7.png" alt="Customer information form" width="600">
+<img src="phase2-screenshots/phase-2_7.png" width="800">
 
 ## Key Code: Card Fields
 
