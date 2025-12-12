@@ -92,58 +92,58 @@ http://localhost:3000/
 
 #### Marseille
 
-![Review Page](phase1-screenshots/phase1_2.png)
+<img src="phase1-screenshots/phase1_2.png" width="800">
 
 #### Paris
 
-![Review Page](phase1-screenshots/phase1_Paris.png)
+<img src="phase1-screenshots/phase1_Paris.png" width="800">
 
 ### Payment Success
 
 #### Marseille
 
-![Payment confirmation](phase1-screenshots/phase1_3.png)
+<img src="phase1-screenshots/phase1_3.png" width="800">
 
 #### Paris
 
-![Payment confirmation](phase1-screenshots/phase1_Paris2.png)
+<img src="phase1-screenshots/phase1_Paris2.png" width="800">
 
 ### Sandbox Dashboard
 
 #### Customer Marseille
 
-![Transaction in PayPal Sandbox Buyer](phase1-screenshots/phase1_4.png)
+<img src="phase1-screenshots/phase1_4.png" width="800">
 
 #### Merchant Marseille
 
-![Transaction in PayPal Sandbox Seller](phase1-screenshots/phase1_5.png)
+<img src="phase1-screenshots/phase1_5.png" width="800">
 
 #### Customer Paris
 
-![Transaction in PayPal Sandbox Buyer](phase1-screenshots/phase1_Paris3.png)
+<img src="phase1-screenshots/phase1_Paris3.png" width="800">
 
 #### Merchant Paris
 
-![Transaction in PayPal Sandbox Seller](phase1-screenshots/phase1_Paris4.png)
+<img src="phase1-screenshots/phase1_Paris4.png" width="800">
 
 ## Debugging
 
-The server logs `PayPal-Debug-Id` for each API call. Use this ID when contacting PayPal Support.
+The server logs `PayPal-Debug-Id` for each API call
 
 Example:
 
 ### createOrder API Call
 
-![REST Orders API (v2) + PayPal-Debug-Id](phase1-screenshots/phase1_createOrder.png)
+<img src="phase1-screenshots/phase1_createOrder.png" width="800">
 
 ### getOrder API Call
 
-![REST Orders API (v2) + PayPal-Debug-Id](phase1-screenshots/phase1_getOrder.png)
+<img src="phase1-screenshots/phase1_getOrder.png" width="800">
 
 ### patchOrder API Call
 
-![REST Orders API (v2) + PayPal-Debug-Id](phase1-screenshots/phase1_patchOrder.png)
+<img src="phase1-screenshots/phase1_patchOrder.png" width="800">
 
 ### captureOrder API Call
 
-![REST Orders API (v2) + PayPal-Debug-Id](phase1-screenshots/phase1_captureOrder.png)
+<img src="phase1-screenshots/phase1_captureOrder.png" width="800">
